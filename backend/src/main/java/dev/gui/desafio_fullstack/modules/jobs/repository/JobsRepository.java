@@ -16,6 +16,6 @@ public interface JobsRepository extends CrudRepository<Jobs, Long>, PagingAndSor
     @Query("UPDATE jobs SET status = 'CLOSED' WHERE id = :id")
     void closeJobsById(@Param("id") Long id);
 
-    @Query("SELECT COUNT(*) FROM vagas WHERE status = 'aberta'")
+    @Query("SELECT COUNT(*) FROM jobs WHERE status = 'OPEN'")
     long countOpenJobs();
 }
