@@ -1,0 +1,67 @@
+package dev.gui.desafio_fullstack.modules.jobs.controller;
+
+import dev.gui.desafio_fullstack.modules.jobs.dto.JobRequest;
+import dev.gui.desafio_fullstack.modules.jobs.dto.JobResponse;
+import dev.gui.desafio_fullstack.modules.jobs.service.JobService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/jobs")
+@RequiredArgsConstructor
+public class JobController {
+
+    private final JobService jobService;
+
+    @PostMapping
+    public ResponseEntity<JobResponse> createJob(@RequestBody @Valid JobRequest jobRequest){
+
+        JobResponse jobResponse = jobService.createJob(jobRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(jobResponse);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<JobResponse>> listJobs(@PageableDefault(size = 10, sort = "id") Pageable pageable){
+
+        Page<JobResponse> jobsList = jobService.listJobs(pageable);
+
+        return ResponseEntity.ok(jobsList);
+    }
+
+    @GetMapping("/{jobId}")
+    public ResponseEntity<JobResponse> findJobById(@PathVariable("jobId") Long jobId){
+
+        JobResponse jobById = jobService.findJobById(jobId);
+
+        return ResponseEntity.ok(jobById);
+    }
+
+    @GetMapping("/dashboard/open-count")
+    public ResponseEntity<Long> getOpenJobsCount() {
+        long count = jobService.countOpenJobs();
+        return ResponseEntity.ok(count);
+    }
+
+    @PutMapping("/{jobId}")
+    public ResponseEntity<JobResponse> updateJob(@PathVariable("jobId") Long jobId, @RequestBody @Valid JobRequest jobRequest) {
+
+        JobResponse updatedJob = jobService.updateJob(jobId, jobRequest);
+
+        return ResponseEntity.ok(updatedJob);
+    }
+
+    @PatchMapping("/{jobId}/close")
+    public ResponseEntity<Void> closeJob(@PathVariable Long jobId) {
+
+        jobService.closeJob(jobId);
+
+        return ResponseEntity.noContent().build();
+    }
+}

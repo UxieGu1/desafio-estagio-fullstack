@@ -1,6 +1,6 @@
 package dev.gui.desafio_fullstack.modules.jobs.repository;
 
-import dev.gui.desafio_fullstack.modules.jobs.entity.Jobs;
+import dev.gui.desafio_fullstack.modules.jobs.entity.Job;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JobsRepository extends CrudRepository<Jobs, Long>, PagingAndSortingRepository<Jobs, Long> {
+public interface JobRepository extends CrudRepository<Job, Long>, PagingAndSortingRepository<Job, Long> {
 
 
     @Modifying
