@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     id BIGSERIAL PRIMARY KEY,
     title VARCHAR(150) NOT NULL,
     area VARCHAR(150) NOT NULL,
-    level VARCHAR(50) NOT NULL, -- ex: internship, junior, mid_level
+    type VARCHAR(50) NOT NULL, -- ex: internship, junior, mid_level
     status VARCHAR(50) NOT NULL DEFAULT 'open' -- ex: open, closed
     );
 
