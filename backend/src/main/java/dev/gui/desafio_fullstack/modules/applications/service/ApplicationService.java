@@ -5,9 +5,9 @@ import dev.gui.desafio_fullstack.modules.applications.dto.ApplicationResponse;
 import dev.gui.desafio_fullstack.modules.applications.entity.Application;
 import dev.gui.desafio_fullstack.modules.applications.mapper.ApplicationMapper;
 import dev.gui.desafio_fullstack.modules.applications.repository.ApplicationRepository;
-import dev.gui.desafio_fullstack.modules.jobs.entity.Jobs;
-import dev.gui.desafio_fullstack.modules.jobs.enums.JobsStatusEnum;
-import dev.gui.desafio_fullstack.modules.jobs.repository.JobsRepository;
+import dev.gui.desafio_fullstack.modules.jobs.entity.Job;
+import dev.gui.desafio_fullstack.modules.jobs.enums.JobStatusEnum;
+import dev.gui.desafio_fullstack.modules.jobs.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,16 +22,16 @@ public class ApplicationService {
 
     private final ApplicationMapper applicationMapper;
 
-    private final JobsRepository jobsRepository;
+    private final JobRepository jobRepository;
 
 
     @Transactional
     public ApplicationResponse createApplication(ApplicationRequest request){
 
-        Jobs jobs = jobsRepository.findById(request.jobId())
+        Job jobs = jobRepository.findById(request.jobId())
                 .orElseThrow(() -> new IllegalArgumentException("Job posting not found with ID: " + request.jobId()));
 
-        if (jobs.getStatus().equals(JobsStatusEnum.CLOSED)) {
+        if (jobs.getStatus().equals(JobStatusEnum.CLOSED)) {
             throw new IllegalStateException("It is not possible to apply for a closed position.");
         }
 
@@ -42,7 +42,7 @@ public class ApplicationService {
     }
 
     public List<ApplicationResponse> listApplicationsbyJob(Long jobId) {
-        if (!jobsRepository.existsById(jobId)) {
+        if (!jobRepository.existsById(jobId)) {
             throw new IllegalArgumentException("Job posting not found with ID: " + jobId);
         }
 
@@ -65,10 +65,10 @@ public class ApplicationService {
                 .orElseThrow(() -> new IllegalArgumentException("Application not found with ID: " + id));
 
         if (!existingApplication.getJobId().equals(request.jobId())) {
-            Jobs newJob = jobsRepository.findById(request.jobId())
+            Job newJob = jobRepository.findById(request.jobId())
                     .orElseThrow(() -> new IllegalArgumentException("Job posting not found with ID: " + request.jobId()));
 
-            if (newJob.getStatus().equals(JobsStatusEnum.CLOSED)) {
+            if (newJob.getStatus().equals(JobStatusEnum.CLOSED)) {
                 throw new IllegalStateException("It is not possible to move application to a closed position.");
             }
             existingApplication.setJobId(request.jobId());

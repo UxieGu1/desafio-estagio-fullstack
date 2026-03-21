@@ -1,31 +1,31 @@
 package dev.gui.desafio_fullstack.modules.jobs.mapper;
 
-import dev.gui.desafio_fullstack.modules.jobs.dto.JobsRequest;
-import dev.gui.desafio_fullstack.modules.jobs.dto.JobsResponse;
-import dev.gui.desafio_fullstack.modules.jobs.entity.Jobs;
-import dev.gui.desafio_fullstack.modules.jobs.enums.JobsStatusEnum;
+import dev.gui.desafio_fullstack.modules.jobs.dto.JobRequest;
+import dev.gui.desafio_fullstack.modules.jobs.dto.JobResponse;
+import dev.gui.desafio_fullstack.modules.jobs.entity.Job;
+import dev.gui.desafio_fullstack.modules.jobs.enums.JobStatusEnum;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JobsMapper {
+public class JobMapper {
 
-    public Jobs toEntity(JobsRequest jobsRequest) {
+    public Job toEntity(JobRequest jobRequest) {
 
-        if (jobsRequest == null) return null;
+        if (jobRequest == null) return null;
 
-        return Jobs.builder()
-                .title(jobsRequest.title())
-                .area(jobsRequest.area())
-                .type(jobsRequest.type())
-                .status(JobsStatusEnum.OPEN)
+        return Job.builder()
+                .title(jobRequest.title())
+                .area(jobRequest.area())
+                .type(jobRequest.type())
+                .status(JobStatusEnum.OPEN)
                 .build();
     }
 
-    public JobsResponse toResponse(Jobs job) {
+    public JobResponse toResponse(Job job) {
 
         if (job == null) return null;
 
-        return new JobsResponse(
+        return new JobResponse(
                 job.getId(),
                 job.getTitle(),
                 job.getArea(),

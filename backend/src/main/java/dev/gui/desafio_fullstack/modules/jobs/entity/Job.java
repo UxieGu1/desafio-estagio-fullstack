@@ -1,6 +1,6 @@
 package dev.gui.desafio_fullstack.modules.jobs.entity;
 
-import dev.gui.desafio_fullstack.modules.jobs.enums.JobsStatusEnum;
+import dev.gui.desafio_fullstack.modules.jobs.enums.JobStatusEnum;
 import dev.gui.desafio_fullstack.modules.jobs.enums.TypeEnum;
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -13,7 +13,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @Builder
-public class Jobs {
+public class Job {
 
     @Id
     @Column("id")
@@ -25,6 +25,6 @@ public class Jobs {
 
     private TypeEnum type;
 
-    private JobsStatusEnum status;
+    private JobStatusEnum status;
 
 }

@@ -1,6 +1,6 @@
 package dev.gui.desafio_fullstack.modules.jobs.enums;
 
-public enum JobsStatusEnum {
+public enum JobStatusEnum {
     OPEN,
     CLOSED
 }
