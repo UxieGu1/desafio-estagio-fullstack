@@ -1,16 +1,18 @@
 package dev.gui.team_guide.modules.jobs.controller;
 
+import dev.gui.team_guide.modules.jobs.dto.JobAppCountDTO;
 import dev.gui.team_guide.modules.jobs.dto.JobRequest;
 import dev.gui.team_guide.modules.jobs.dto.JobResponse;
+import dev.gui.team_guide.modules.jobs.dto.StatusCountDTO;
 import dev.gui.team_guide.modules.jobs.service.JobService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/jobs")
@@ -48,6 +50,16 @@ public class JobController {
     public ResponseEntity<Long> getOpenJobsCount() {
         long count = jobService.countOpenJobs();
         return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/dashboard/status")
+    public ResponseEntity<List<StatusCountDTO>> getStatusCount() {
+        return ResponseEntity.ok(jobService.getDashboardStatusCount());
+    }
+
+    @GetMapping("/dashboard/applications-count")
+    public ResponseEntity<List<JobAppCountDTO>> getApplicationCount() {
+        return ResponseEntity.ok(jobService.getDashboardApplicationCount());
     }
 
     @PutMapping("/{jobId}")

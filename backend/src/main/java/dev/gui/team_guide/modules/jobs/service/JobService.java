@@ -1,16 +1,20 @@
 package dev.gui.team_guide.modules.jobs.service;
 
+import dev.gui.team_guide.modules.jobs.dto.JobAppCountDTO;
 import dev.gui.team_guide.modules.jobs.dto.JobRequest;
 import dev.gui.team_guide.modules.jobs.dto.JobResponse;
+import dev.gui.team_guide.modules.jobs.dto.StatusCountDTO;
 import dev.gui.team_guide.modules.jobs.entity.Job;
 import dev.gui.team_guide.modules.jobs.mapper.JobMapper;
 import dev.gui.team_guide.modules.jobs.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +51,14 @@ public class JobService {
         Job job = jobRepository.findById(jobId)
                 .orElseThrow(() -> new RuntimeException("Job posting not found with ID: " + jobId));
         return jobMapper.toResponse(job);
+    }
+
+    public List<StatusCountDTO> getDashboardStatusCount() {
+        return jobRepository.countJobsByStatus();
+    }
+
+    public List<JobAppCountDTO> getDashboardApplicationCount() {
+        return jobRepository.countApplicationsPerJob();
     }
 
     public Long countOpenJobs() {
