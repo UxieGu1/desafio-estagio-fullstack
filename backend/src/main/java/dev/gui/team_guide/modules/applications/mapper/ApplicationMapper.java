@@ -1,10 +1,10 @@
-package dev.gui.desafio_fullstack.modules.applications.mapper;
+package dev.gui.team_guide.modules.applications.mapper;
 
 
-import dev.gui.desafio_fullstack.modules.applications.dto.ApplicationRequest;
-import dev.gui.desafio_fullstack.modules.applications.dto.ApplicationResponse;
-import dev.gui.desafio_fullstack.modules.applications.entity.Application;
-import dev.gui.desafio_fullstack.modules.applications.enums.ApplicationStatusEnum;
+import dev.gui.team_guide.modules.applications.dto.ApplicationRequest;
+import dev.gui.team_guide.modules.applications.dto.ApplicationResponse;
+import dev.gui.team_guide.modules.applications.entity.Application;
+import dev.gui.team_guide.modules.applications.enums.ApplicationStatusEnum;
 import org.springframework.stereotype.Component;
 
 @Component

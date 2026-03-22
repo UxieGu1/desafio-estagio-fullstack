@@ -1,4 +1,4 @@
-package dev.gui.desafio_fullstack.modules.applications.dto;
+package dev.gui.team_guide.modules.applications.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

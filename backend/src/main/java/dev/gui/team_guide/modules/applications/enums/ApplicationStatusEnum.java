@@ -1,4 +1,4 @@
-package dev.gui.desafio_fullstack.modules.applications.enums;
+package dev.gui.team_guide.modules.applications.enums;
 
 public enum ApplicationStatusEnum {
     UNDER_REVIEW, // em análise

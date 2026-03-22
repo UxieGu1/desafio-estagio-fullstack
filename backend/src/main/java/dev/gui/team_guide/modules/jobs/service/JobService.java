@@ -1,10 +1,10 @@
-package dev.gui.desafio_fullstack.modules.jobs.service;
+package dev.gui.team_guide.modules.jobs.service;
 
-import dev.gui.desafio_fullstack.modules.jobs.dto.JobRequest;
-import dev.gui.desafio_fullstack.modules.jobs.dto.JobResponse;
-import dev.gui.desafio_fullstack.modules.jobs.entity.Job;
-import dev.gui.desafio_fullstack.modules.jobs.mapper.JobMapper;
-import dev.gui.desafio_fullstack.modules.jobs.repository.JobRepository;
+import dev.gui.team_guide.modules.jobs.dto.JobRequest;
+import dev.gui.team_guide.modules.jobs.dto.JobResponse;
+import dev.gui.team_guide.modules.jobs.entity.Job;
+import dev.gui.team_guide.modules.jobs.mapper.JobMapper;
+import dev.gui.team_guide.modules.jobs.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

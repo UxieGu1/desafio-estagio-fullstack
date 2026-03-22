@@ -1,6 +1,6 @@
-package dev.gui.desafio_fullstack.modules.jobs.dto;
+package dev.gui.team_guide.modules.jobs.dto;
 
-import dev.gui.desafio_fullstack.modules.jobs.enums.TypeEnum;
+import dev.gui.team_guide.modules.jobs.enums.TypeEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

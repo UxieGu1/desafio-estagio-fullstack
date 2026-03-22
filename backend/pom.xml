@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>dev.gui</groupId>
-	<artifactId>desafio-fullstack</artifactId>
+	<artifactId>team_guide</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name/>
 	<description/>

@@ -1,6 +1,6 @@
-package dev.gui.desafio_fullstack.modules.applications.entity;
+package dev.gui.team_guide.modules.applications.entity;
 
-import dev.gui.desafio_fullstack.modules.applications.enums.ApplicationStatusEnum;
+import dev.gui.team_guide.modules.applications.enums.ApplicationStatusEnum;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;

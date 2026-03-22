@@ -1,6 +1,6 @@
-package dev.gui.desafio_fullstack.modules.applications.repository;
+package dev.gui.team_guide.modules.applications.repository;
 
-import dev.gui.desafio_fullstack.modules.applications.entity.Application;
+import dev.gui.team_guide.modules.applications.entity.Application;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

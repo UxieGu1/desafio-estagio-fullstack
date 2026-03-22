@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'dev.gui.desafio-fullstack' is invalid and this project uses 'dev.gui.desafio_fullstack' instead.
+* The original package name 'dev.gui.desafio-fullstack' is invalid and this project uses 'dev.gui.team_guide' instead.
 
 # Getting Started
 

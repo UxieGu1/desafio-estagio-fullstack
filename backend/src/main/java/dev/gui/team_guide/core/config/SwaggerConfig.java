@@ -1,4 +1,4 @@
-package dev.gui.desafio_fullstack.core.config;
+package dev.gui.team_guide.core.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

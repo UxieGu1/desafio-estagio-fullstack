@@ -1,6 +1,6 @@
-package dev.gui.desafio_fullstack.modules.jobs.repository;
+package dev.gui.team_guide.modules.jobs.repository;
 
-import dev.gui.desafio_fullstack.modules.jobs.entity.Job;
+import dev.gui.team_guide.modules.jobs.entity.Job;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;

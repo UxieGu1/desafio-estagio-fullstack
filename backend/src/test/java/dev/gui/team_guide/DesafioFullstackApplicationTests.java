@@ -1,4 +1,4 @@
-package dev.gui.desafio_fullstack;
+package dev.gui.team_guide;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

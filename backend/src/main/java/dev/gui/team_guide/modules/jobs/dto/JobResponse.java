@@ -1,7 +1,7 @@
-package dev.gui.desafio_fullstack.modules.jobs.dto;
+package dev.gui.team_guide.modules.jobs.dto;
 
-import dev.gui.desafio_fullstack.modules.jobs.enums.JobStatusEnum;
-import dev.gui.desafio_fullstack.modules.jobs.enums.TypeEnum;
+import dev.gui.team_guide.modules.jobs.enums.JobStatusEnum;
+import dev.gui.team_guide.modules.jobs.enums.TypeEnum;
 
 public record JobResponse(
         Long id,

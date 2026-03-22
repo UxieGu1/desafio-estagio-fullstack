@@ -1,7 +1,7 @@
-package dev.gui.desafio_fullstack.modules.jobs.entity;
+package dev.gui.team_guide.modules.jobs.entity;
 
-import dev.gui.desafio_fullstack.modules.jobs.enums.JobStatusEnum;
-import dev.gui.desafio_fullstack.modules.jobs.enums.TypeEnum;
+import dev.gui.team_guide.modules.jobs.enums.JobStatusEnum;
+import dev.gui.team_guide.modules.jobs.enums.TypeEnum;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;

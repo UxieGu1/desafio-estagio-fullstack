@@ -1,13 +1,14 @@
-package dev.gui.desafio_fullstack.modules.applications.service;
+package dev.gui.team_guide.modules.applications.service;
 
-import dev.gui.desafio_fullstack.modules.applications.dto.ApplicationRequest;
-import dev.gui.desafio_fullstack.modules.applications.dto.ApplicationResponse;
-import dev.gui.desafio_fullstack.modules.applications.entity.Application;
-import dev.gui.desafio_fullstack.modules.applications.mapper.ApplicationMapper;
-import dev.gui.desafio_fullstack.modules.applications.repository.ApplicationRepository;
-import dev.gui.desafio_fullstack.modules.jobs.entity.Job;
-import dev.gui.desafio_fullstack.modules.jobs.enums.JobStatusEnum;
-import dev.gui.desafio_fullstack.modules.jobs.repository.JobRepository;
+import dev.gui.team_guide.modules.applications.dto.ApplicationRequest;
+import dev.gui.team_guide.modules.applications.dto.ApplicationResponse;
+import dev.gui.team_guide.modules.applications.entity.Application;
+import dev.gui.team_guide.modules.applications.enums.ApplicationStatusEnum;
+import dev.gui.team_guide.modules.applications.mapper.ApplicationMapper;
+import dev.gui.team_guide.modules.applications.repository.ApplicationRepository;
+import dev.gui.team_guide.modules.jobs.entity.Job;
+import dev.gui.team_guide.modules.jobs.enums.JobStatusEnum;
+import dev.gui.team_guide.modules.jobs.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,6 +80,16 @@ public class ApplicationService {
 
         Application updatedApplication = applicationRepository.save(existingApplication);
         return applicationMapper.toResponse(updatedApplication);
+    }
+
+    public ApplicationResponse updateApplicationStatus(Long id, String newStatus) {
+        Application application = applicationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Candidatura não encontrada."));
+
+        application.setStatus(ApplicationStatusEnum.valueOf(newStatus));
+
+        Application savedApplication = applicationRepository.save(application);
+        return applicationMapper.toResponse(savedApplication);
     }
 
     @Transactional

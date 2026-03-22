@@ -1,8 +1,8 @@
-package dev.gui.desafio_fullstack.modules.jobs.controller;
+package dev.gui.team_guide.modules.jobs.controller;
 
-import dev.gui.desafio_fullstack.modules.jobs.dto.JobRequest;
-import dev.gui.desafio_fullstack.modules.jobs.dto.JobResponse;
-import dev.gui.desafio_fullstack.modules.jobs.service.JobService;
+import dev.gui.team_guide.modules.jobs.dto.JobRequest;
+import dev.gui.team_guide.modules.jobs.dto.JobResponse;
+import dev.gui.team_guide.modules.jobs.service.JobService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

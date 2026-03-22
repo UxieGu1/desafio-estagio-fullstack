@@ -1,4 +1,4 @@
-package dev.gui.desafio_fullstack.modules.jobs.enums;
+package dev.gui.team_guide.modules.jobs.enums;
 
 public enum TypeEnum {
     INTERNSHIP, //estagio

@@ -1,9 +1,9 @@
-package dev.gui.desafio_fullstack.modules.jobs.mapper;
+package dev.gui.team_guide.modules.jobs.mapper;
 
-import dev.gui.desafio_fullstack.modules.jobs.dto.JobRequest;
-import dev.gui.desafio_fullstack.modules.jobs.dto.JobResponse;
-import dev.gui.desafio_fullstack.modules.jobs.entity.Job;
-import dev.gui.desafio_fullstack.modules.jobs.enums.JobStatusEnum;
+import dev.gui.team_guide.modules.jobs.dto.JobRequest;
+import dev.gui.team_guide.modules.jobs.dto.JobResponse;
+import dev.gui.team_guide.modules.jobs.entity.Job;
+import dev.gui.team_guide.modules.jobs.enums.JobStatusEnum;
 import org.springframework.stereotype.Component;
 
 @Component

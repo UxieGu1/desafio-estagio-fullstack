@@ -1,4 +1,4 @@
-package dev.gui.desafio_fullstack;
+package dev.gui.team_guide;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,10 +8,10 @@ import static org.springframework.data.web.config.EnableSpringDataWebSupport.Pag
 
 @SpringBootApplication
 @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
-public class DesafioFullstackApplication {
+public class TeamGuideApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DesafioFullstackApplication.class, args);
+		SpringApplication.run(TeamGuideApplication.class, args);
 	}
 
 }

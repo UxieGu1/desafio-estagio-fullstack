@@ -1,6 +1,6 @@
-package dev.gui.desafio_fullstack.modules.applications.dto;
+package dev.gui.team_guide.modules.applications.dto;
 
-import dev.gui.desafio_fullstack.modules.applications.enums.ApplicationStatusEnum;
+import dev.gui.team_guide.modules.applications.enums.ApplicationStatusEnum;
 
 public record ApplicationResponse(
         Long id,

@@ -1,8 +1,9 @@
-package dev.gui.desafio_fullstack.modules.applications.controller;
+package dev.gui.team_guide.modules.applications.controller;
 
-import dev.gui.desafio_fullstack.modules.applications.dto.ApplicationRequest;
-import dev.gui.desafio_fullstack.modules.applications.dto.ApplicationResponse;
-import dev.gui.desafio_fullstack.modules.applications.service.ApplicationService;
+import dev.gui.team_guide.modules.applications.dto.ApplicationRequest;
+import dev.gui.team_guide.modules.applications.dto.ApplicationResponse;
+import dev.gui.team_guide.modules.applications.dto.UpdateStatusRequest;
+import dev.gui.team_guide.modules.applications.service.ApplicationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,15 @@ public class ApplicationController {
             @Valid @RequestBody ApplicationRequest request) {
 
         ApplicationResponse updatedApplication = applicationService.updateApplication(id, request);
+        return ResponseEntity.ok(updatedApplication);
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<ApplicationResponse> updateApplicationStatus(
+            @PathVariable Long id,
+            @RequestBody UpdateStatusRequest request) {
+
+        ApplicationResponse updatedApplication = applicationService.updateApplicationStatus(id, request.status());
         return ResponseEntity.ok(updatedApplication);
     }
 
