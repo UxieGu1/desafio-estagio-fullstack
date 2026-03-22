@@ -17,5 +17,5 @@ public interface JobRepository extends CrudRepository<Job, Long>, PagingAndSorti
     void closeJobsById(@Param("id") Long id);
 
     @Query("SELECT COUNT(*) FROM jobs WHERE status = 'OPEN'")
-    long countOpenJobs();
+    Long countOpenJobs();
 }
