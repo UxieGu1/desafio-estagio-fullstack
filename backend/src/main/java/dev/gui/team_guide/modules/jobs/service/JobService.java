@@ -7,6 +7,7 @@ import dev.gui.team_guide.modules.jobs.mapper.JobMapper;
 import dev.gui.team_guide.modules.jobs.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +29,17 @@ public class JobService {
         return jobMapper.toResponse(savedJob);
     }
 
-    public Page<JobResponse> listJobs(Pageable pageable) {
+    public Page<JobResponse> listJobs(int page, int size, String title) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Job> jobsPage;
 
-        Page<Job> vagasPage = jobRepository.findAll(pageable);
-        return vagasPage.map(jobMapper::toResponse);
+        if (title != null && !title.trim().isEmpty()) {
+            jobsPage = jobRepository.findByTitleContainingIgnoreCase(title, pageRequest);
+        } else {
+            jobsPage = jobRepository.findAll(pageRequest);
+        }
+
+        return jobsPage.map(jobMapper::toResponse);
     }
 
     public JobResponse findJobById(Long jobId) {

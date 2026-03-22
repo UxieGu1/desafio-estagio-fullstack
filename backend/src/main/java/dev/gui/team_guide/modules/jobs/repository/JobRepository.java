@@ -1,6 +1,8 @@
 package dev.gui.team_guide.modules.jobs.repository;
 
 import dev.gui.team_guide.modules.jobs.entity.Job;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -18,4 +20,6 @@ public interface JobRepository extends CrudRepository<Job, Long>, PagingAndSorti
 
     @Query("SELECT COUNT(*) FROM jobs WHERE status = 'OPEN'")
     Long countOpenJobs();
+
+    Page<Job> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 }

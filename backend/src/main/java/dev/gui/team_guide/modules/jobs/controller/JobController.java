@@ -28,11 +28,12 @@ public class JobController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<JobResponse>> listJobs(@PageableDefault(size = 10, sort = "id") Pageable pageable){
+    public ResponseEntity<Page<JobResponse>> listJobs(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String title) {
 
-        Page<JobResponse> jobsList = jobService.listJobs(pageable);
-
-        return ResponseEntity.ok(jobsList);
+        Page<JobResponse> jobs = jobService.listJobs(page, size, title);
+        return ResponseEntity.ok(jobs);
     }
 
     @GetMapping("/{jobId}")
