@@ -77,4 +77,11 @@ public class JobController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{jobId}")
+    public ResponseEntity<Void> deleteJob(@PathVariable("jobId") Long jobId) {
+
+        jobService.deleteJob(jobId);
+        return ResponseEntity.noContent().build();
+    }
 }

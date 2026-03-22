@@ -88,4 +88,14 @@ public class JobService {
 
         jobRepository.closeJobsById(jobId);
     }
+
+    @Transactional
+    public void deleteJob(Long jobId) {
+
+        Job existingJob = jobRepository.findById(jobId)
+                .orElseThrow(() -> new RuntimeException("Job posting not found with ID: " + jobId));
+
+        jobRepository.delete(existingJob);
+    }
+
 }
