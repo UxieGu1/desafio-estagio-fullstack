@@ -1,5 +1,7 @@
 package dev.gui.team_guide.modules.applications.service;
 
+import dev.gui.team_guide.core.exception.BusinessRuleException;
+import dev.gui.team_guide.core.exception.ResourceNotFoundException;
 import dev.gui.team_guide.modules.applications.dto.ApplicationRequest;
 import dev.gui.team_guide.modules.applications.dto.ApplicationResponse;
 import dev.gui.team_guide.modules.applications.entity.Application;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ApplicationService {
 
+
     private final ApplicationRepository applicationRepository;
 
     private final ApplicationMapper applicationMapper;
@@ -30,10 +33,10 @@ public class ApplicationService {
     public ApplicationResponse createApplication(ApplicationRequest request){
 
         Job jobs = jobRepository.findById(request.jobId())
-                .orElseThrow(() -> new IllegalArgumentException("Job posting not found with ID: " + request.jobId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Job posting not found with ID: " + request.jobId()));
 
         if (jobs.getStatus().equals(JobStatusEnum.CLOSED)) {
-            throw new IllegalStateException("It is not possible to apply for a closed position.");
+            throw new BusinessRuleException("It is not possible to apply for a closed position.");
         }
 
         Application application = applicationMapper.toEntity(request);
@@ -44,7 +47,7 @@ public class ApplicationService {
 
     public List<ApplicationResponse> listApplicationsbyJob(Long jobId) {
         if (!jobRepository.existsById(jobId)) {
-            throw new IllegalArgumentException("Job posting not found with ID: " + jobId);
+            throw new ResourceNotFoundException("Job posting not found with ID: " + jobId);
         }
 
         return applicationRepository.findAllByJobId(jobId)
@@ -55,7 +58,7 @@ public class ApplicationService {
 
     public ApplicationResponse getApplicationById(Long id) {
         Application application = applicationRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Application not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Application not found with ID: " + id));
 
         return applicationMapper.toResponse(application);
     }
@@ -63,11 +66,11 @@ public class ApplicationService {
     @Transactional
     public ApplicationResponse updateApplication(Long id, ApplicationRequest request) {
         Application existingApplication = applicationRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Application not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Application not found with ID: " + id));
 
         if (!existingApplication.getJobId().equals(request.jobId())) {
             Job newJob = jobRepository.findById(request.jobId())
-                    .orElseThrow(() -> new IllegalArgumentException("Job posting not found with ID: " + request.jobId()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Job posting not found with ID: " + request.jobId()));
 
             if (newJob.getStatus().equals(JobStatusEnum.CLOSED)) {
                 throw new IllegalStateException("It is not possible to move application to a closed position.");
@@ -84,7 +87,7 @@ public class ApplicationService {
 
     public ApplicationResponse updateApplicationStatus(Long id, String newStatus) {
         Application application = applicationRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Candidatura não encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("Application not found with ID: " + id));
 
         application.setStatus(ApplicationStatusEnum.valueOf(newStatus));
 
@@ -95,7 +98,7 @@ public class ApplicationService {
     @Transactional
     public void deleteApplication(Long id) {
         if (!applicationRepository.existsById(id)) {
-            throw new IllegalArgumentException("Application not found with ID: " + id);
+            throw new ResourceNotFoundException("Application not found with ID: " + id);
         }
         applicationRepository.deleteById(id);
     }

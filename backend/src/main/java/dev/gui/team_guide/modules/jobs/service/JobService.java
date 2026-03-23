@@ -1,5 +1,6 @@
 package dev.gui.team_guide.modules.jobs.service;
 
+import dev.gui.team_guide.core.exception.ResourceNotFoundException;
 import dev.gui.team_guide.modules.jobs.dto.JobAppCountDTO;
 import dev.gui.team_guide.modules.jobs.dto.JobRequest;
 import dev.gui.team_guide.modules.jobs.dto.JobResponse;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +49,7 @@ public class JobService {
     public JobResponse findJobById(Long jobId) {
 
         Job job = jobRepository.findById(jobId)
-                .orElseThrow(() -> new RuntimeException("Job posting not found with ID: " + jobId));
+                .orElseThrow(() -> new ResourceNotFoundException("Job posting not found with ID: " + jobId));
         return jobMapper.toResponse(job);
     }
 
@@ -69,7 +69,7 @@ public class JobService {
     public JobResponse updateJob(Long jobId, JobRequest jobRequest) {
 
         Job existingJob = jobRepository.findById(jobId)
-                .orElseThrow(() -> new RuntimeException("Job posting not found with ID: " + jobId));
+                .orElseThrow(() -> new ResourceNotFoundException("Job posting not found with ID: " + jobId));
 
         existingJob.setTitle(jobRequest.title());
         existingJob.setArea(jobRequest.area());
@@ -84,7 +84,7 @@ public class JobService {
     public void closeJob(Long jobId){
 
         Job job = jobRepository.findById(jobId)
-                .orElseThrow(() -> new RuntimeException("Job posting not found with ID: " + jobId));
+                .orElseThrow(() -> new ResourceNotFoundException("Job posting not found with ID: " + jobId));
 
         jobRepository.closeJobsById(jobId);
     }
@@ -93,7 +93,7 @@ public class JobService {
     public void deleteJob(Long jobId) {
 
         Job existingJob = jobRepository.findById(jobId)
-                .orElseThrow(() -> new RuntimeException("Job posting not found with ID: " + jobId));
+                .orElseThrow(() -> new ResourceNotFoundException("Job posting not found with ID: " + jobId));
 
         jobRepository.delete(existingJob);
     }
