@@ -30,14 +30,12 @@ public interface JobRepository extends CrudRepository<Job, Long>, PagingAndSorti
     Page<Job> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 
 
-    // Consulta 1: Agrupamento Simples
     @Query(value = "SELECT status AS status, COUNT(id) AS total " +
             "FROM jobs " +
             "GROUP BY status",
-            rowMapperClass = StatusCountMapper.class) // <-- O Segredo está aqui!
+            rowMapperClass = StatusCountMapper.class)
     List<StatusCountDTO> countJobsByStatus();
 
-    // Consulta 2: JOIN, GROUP BY e ORDER BY
     @Query(value = "SELECT j.title AS title, COUNT(a.id) AS total " +
             "FROM jobs j " +
             "LEFT JOIN applications a ON j.id = a.job_id " +
