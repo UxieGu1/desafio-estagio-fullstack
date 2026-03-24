@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Typography, Chip, Tooltip, IconButton } from "@material-ui/core";
 import BlockIcon from "@material-ui/icons/Block";
 import EditIcon from "@material-ui/icons/Edit";
