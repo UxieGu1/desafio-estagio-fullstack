@@ -1,10 +1,10 @@
 package dev.gui.team_guide.modules.jobs.service;
 
-import dev.gui.team_guide.core.exception.ResourceNotFoundException;
 import dev.gui.team_guide.modules.jobs.dto.JobAppCountDTO;
 import dev.gui.team_guide.modules.jobs.dto.JobRequest;
 import dev.gui.team_guide.modules.jobs.dto.JobResponse;
 import dev.gui.team_guide.modules.jobs.dto.StatusCountDTO;
+import dev.gui.team_guide.modules.jobs.ensurer.JobEnsurer;
 import dev.gui.team_guide.modules.jobs.entity.Job;
 import dev.gui.team_guide.modules.jobs.mapper.JobMapper;
 import dev.gui.team_guide.modules.jobs.repository.JobRepository;
@@ -23,6 +23,8 @@ public class JobService {
     private final JobRepository jobRepository;
 
     private final JobMapper jobMapper;
+
+    private final JobEnsurer jobEnsurer;
 
 
     @Transactional
@@ -48,8 +50,7 @@ public class JobService {
 
     public JobResponse findJobById(Long jobId) {
 
-        Job job = jobRepository.findById(jobId)
-                .orElseThrow(() -> new ResourceNotFoundException("Job posting not found with ID: " + jobId));
+        Job job = jobEnsurer.ensureJobExists(jobId);
         return jobMapper.toResponse(job);
     }
 
@@ -68,8 +69,7 @@ public class JobService {
     @Transactional
     public JobResponse updateJob(Long jobId, JobRequest jobRequest) {
 
-        Job existingJob = jobRepository.findById(jobId)
-                .orElseThrow(() -> new ResourceNotFoundException("Job posting not found with ID: " + jobId));
+        Job existingJob = jobEnsurer.ensureJobExists(jobId);
 
         existingJob.setTitle(jobRequest.title());
         existingJob.setArea(jobRequest.area());
@@ -83,19 +83,14 @@ public class JobService {
     @Transactional
     public void closeJob(Long jobId){
 
-        Job job = jobRepository.findById(jobId)
-                .orElseThrow(() -> new ResourceNotFoundException("Job posting not found with ID: " + jobId));
-
+        Job job = jobEnsurer.ensureJobExists(jobId);
         jobRepository.closeJobsById(jobId);
     }
 
     @Transactional
     public void deleteJob(Long jobId) {
 
-        Job existingJob = jobRepository.findById(jobId)
-                .orElseThrow(() -> new ResourceNotFoundException("Job posting not found with ID: " + jobId));
-
+        Job existingJob = jobEnsurer.ensureJobExists(jobId);
         jobRepository.delete(existingJob);
     }
-
 }
