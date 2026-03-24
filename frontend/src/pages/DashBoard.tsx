@@ -1,4 +1,3 @@
-import React from 'react';
 import { useQuery } from 'react-query';
 import { getDashboardStatusCount, getDashboardApplicationCount } from '../services/jobService';
 import { Container, Typography, Box, Paper, Grid, CircularProgress, Button } from '@material-ui/core';

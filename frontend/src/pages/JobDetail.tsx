@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { getJobById, closeJob, updateJob, deleteJob } from "../services/jobService";
+import {
+  getJobById,
+  closeJob,
+  updateJob,
+  deleteJob,
+} from "../services/jobService";
 import {
   listApplicationsByJob,
   createApplication,
@@ -16,53 +21,31 @@ import {
   Paper,
   Divider,
   List,
-  ListItem,
-  ListItemText,
   Button,
-  Chip,
-  TextField,
+  Snackbar,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  ListItemSecondaryAction,
-  IconButton,
-  Tooltip,
-  Snackbar,
-  MenuItem,
-  Select,
-  InputLabel,
+  TextField,
   FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import BlockIcon from "@material-ui/icons/Block";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CancelIcon from "@material-ui/icons/Cancel";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
-const statusMap: Record<
-  string,
-  { label: string; color: string; textColor: string }
-> = {
-  UNDER_REVIEW: { label: "Em Análise", color: "#e0e0e0", textColor: "#333" },
-  APPROVED: { label: "Aprovada", color: "#4caf50", textColor: "#fff" },
-  REJECTED: { label: "Rejeitada", color: "#f44336", textColor: "#fff" },
-};
-
-const jobTypeMap: Record<string, string> = {
-  INTERNSHIP: "Estágio",
-  JUNIOR: "Júnior",
-  MID_LEVEL: "Pleno",
-  SENIOR: "Sênior",
-};
+// Importação dos teus novos componentes
+import ApplyJobModal from "../components/ApplyJobModal";
+import JobDetailHeader from "../components/JobDetailHeader";
+import CandidateListItem from "../components/CandidateListItem";
 
 export default function JobDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  // Estados dos Modais
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [candidateData, setCandidateData] = useState({
     candidateName: "",
@@ -86,6 +69,7 @@ export default function JobDetail() {
     setSnackbar({ open: true, message, type });
   };
 
+  // Queries
   const { data: job, isLoading: loadingJob } = useQuery(
     ["job", id],
     () => getJobById(Number(id)),
@@ -98,6 +82,7 @@ export default function JobDetail() {
     { enabled: !!id },
   );
 
+  // Mutations
   const applyMutation = useMutation(createApplication, {
     onSuccess: () => {
       queryClient.invalidateQueries(["applications", id]);
@@ -149,21 +134,20 @@ export default function JobDetail() {
         setIsEditModalOpen(false);
         showMessage("Vaga atualizada com sucesso!", "success");
       },
-      onError: () => showMessage("Erro ao atualizar vaga.", "error")
-    }
+      onError: () => showMessage("Erro ao atualizar vaga.", "error"),
+    },
   );
 
-  const deleteJobMutation = useMutation(
-    () => deleteJob(Number(id)),
-    {
-      onSuccess: () => {
-        showMessage("Vaga excluída com sucesso!", "success");
-        navigate("/vagas"); 
-      },
-      onError: () => showMessage("Erro ao excluir. Remova as candidaturas primeiro.", "error")
-    }
-  );
+  const deleteJobMutation = useMutation(() => deleteJob(Number(id)), {
+    onSuccess: () => {
+      showMessage("Vaga excluída com sucesso!", "success");
+      navigate("/vagas");
+    },
+    onError: () =>
+      showMessage("Erro ao excluir. Remova as candidaturas primeiro.", "error"),
+  });
 
+  // Handlers
   const handleApplySubmit = (e: React.FormEvent) => {
     e.preventDefault();
     applyMutation.mutate({
@@ -217,7 +201,7 @@ export default function JobDetail() {
 
   if (!job)
     return (
-      <Typography color="error" align="center" style={{ marginTop: '20px' }}>
+      <Typography color="error" align="center" style={{ marginTop: "20px" }}>
         Vaga não encontrada.
       </Typography>
     );
@@ -237,51 +221,14 @@ export default function JobDetail() {
 
         <Paper elevation={3} style={{ padding: "30px", borderRadius: "12px" }}>
           
-          <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
-            <Box>
-              <Typography variant="h4" style={{ fontWeight: 700, color: "#333" }}>
-                {job.title}
-              </Typography>
-              <Box mt={1} display="flex" alignItems="center" style={{ gap: "10px" }}>
-                <Chip
-                  label={isJobOpen ? "Aberta" : "Fechada"}
-                  color={isJobOpen ? "primary" : "default"}
-                  style={isJobOpen ? { backgroundColor: "#ffa726", color: "#fff" } : {}}
-                />
-                <Typography variant="subtitle1" color="textSecondary">
-                  {job.area} • {jobTypeMap[job.type] || job.type}
-                </Typography>
-              </Box>
-            </Box>
-
-            <Box display="flex" alignItems="center" style={{ gap: "5px" }}>
-              
-              <Tooltip title="Editar Vaga">
-                <IconButton onClick={handleOpenEdit} disabled={!isJobOpen}>
-                  <EditIcon style={{ color: !isJobOpen ? "#ccc" : "#ffa726" }} /> 
-                </IconButton>
-              </Tooltip>
-              
-              {isJobOpen && (
-                <Tooltip title="Encerrar Vaga">
-                  <IconButton
-                    onClick={handleCloseClick}
-                    disabled={closeMutation.isLoading}
-                    style={{ color: "#757575" }}
-                  >
-                    <BlockIcon />
-                  </IconButton>
-                </Tooltip>
-              )}
-
-              <Tooltip title="Apagar Vaga">
-                <IconButton onClick={handleDeleteJobClick}>
-                  <DeleteForeverIcon style={{ color: "#f44336" }} />
-                </IconButton>
-              </Tooltip>
-
-            </Box>
-          </Box>
+          <JobDetailHeader
+            job={job}
+            isJobOpen={isJobOpen}
+            onEdit={handleOpenEdit}
+            onCloseJob={handleCloseClick}
+            onDeleteJob={handleDeleteJobClick}
+            isClosing={closeMutation.isLoading}
+          />
 
           <Divider style={{ margin: "30px 0" }} />
 
@@ -303,72 +250,15 @@ export default function JobDetail() {
 
             <List>
               {applications && applications.length > 0 ? (
-                applications.map((app) => (
-                  <React.Fragment key={app.id}>
-                    <ListItem style={{ padding: "15px 0" }}>
-                      <ListItemText
-                        primary={
-                          <Typography variant="subtitle1" style={{ fontWeight: 600 }}>
-                            {app.candidateName}
-                          </Typography>
-                        }
-                        secondary={
-                          <Box display="flex" alignItems="center" style={{ gap: "10px", marginTop: "4px" }}>
-                            <Typography variant="body2">{app.email}</Typography>
-                            <Chip
-                              size="small"
-                              label={statusMap[app.status]?.label || app.status}
-                              style={{
-                                backgroundColor: statusMap[app.status]?.color,
-                                color: statusMap[app.status]?.textColor,
-                                fontSize: "0.7rem",
-                              }}
-                            />
-                          </Box>
-                        }
-                      />
-
-                      <ListItemSecondaryAction>
-                        {app.status === "UNDER_REVIEW" && (
-                          <>
-                            <Tooltip title="Aprovar">
-                              <IconButton
-                                edge="end"
-                                style={{ color: "#4caf50", marginRight: "5px" }}
-                                onClick={() => handleUpdateStatus(app.id, "APPROVED")}
-                                disabled={updateStatusMutation.isLoading}
-                              >
-                                <CheckCircleIcon />
-                              </IconButton>
-                            </Tooltip>
-
-                            <Tooltip title="Reprovar">
-                              <IconButton
-                                edge="end"
-                                style={{ color: "#ff9800", marginRight: "5px" }}
-                                onClick={() => handleUpdateStatus(app.id, "REJECTED")}
-                                disabled={updateStatusMutation.isLoading}
-                              >
-                                <CancelIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </>
-                        )}
-
-                        <Tooltip title="Excluir Candidatura">
-                          <IconButton
-                            edge="end"
-                            style={{ color: "#f44336" }}
-                            onClick={() => handleDelete(app.id)}
-                            disabled={deleteMutation.isLoading}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                    <Divider component="li" />
-                  </React.Fragment>
+                applications.map((app: any) => (
+                  <CandidateListItem
+                    key={app.id}
+                    app={app}
+                    onUpdateStatus={handleUpdateStatus}
+                    onDelete={handleDelete}
+                    isUpdating={updateStatusMutation.isLoading}
+                    isDeleting={deleteMutation.isLoading}
+                  />
                 ))
               ) : (
                 <Box py={5} textAlign="center">
@@ -382,42 +272,15 @@ export default function JobDetail() {
         </Paper>
       </Box>
 
-      <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} fullWidth maxWidth="xs">
-        <DialogTitle>Enviar Candidatura</DialogTitle>
-        <form onSubmit={handleApplySubmit}>
-          <DialogContent>
-            <Typography variant="body2" gutterBottom color="textSecondary">
-              Preencha os seus dados para concorrer à vaga:{" "}
-              <strong>{job.title}</strong>
-            </Typography>
-            <TextField
-              label="Nome Completo"
-              fullWidth
-              required
-              variant="outlined"
-              margin="normal"
-              value={candidateData.candidateName}
-              onChange={(e) => setCandidateData({ ...candidateData, candidateName: e.target.value })}
-            />
-            <TextField
-              label="E-mail"
-              type="email"
-              fullWidth
-              required
-              variant="outlined"
-              margin="normal"
-              value={candidateData.email}
-              onChange={(e) => setCandidateData({ ...candidateData, email: e.target.value })}
-            />
-          </DialogContent>
-          <DialogActions style={{ padding: "16px 24px" }}>
-            <Button onClick={() => setIsModalOpen(false)}>Cancelar</Button>
-            <Button type="submit" variant="contained" color="primary" disabled={applyMutation.isLoading} style={{ backgroundColor: "#ffa726", color: "#fff" }}>
-              {applyMutation.isLoading ? "Enviando..." : "Confirmar"}
-            </Button>
-          </DialogActions>
-        </form>
-      </Dialog>
+      <ApplyJobModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleApplySubmit}
+        candidateData={candidateData}
+        setCandidateData={setCandidateData}
+        isLoading={applyMutation.isLoading}
+        jobTitle={job.title}
+      />
 
       <Dialog open={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} fullWidth maxWidth="sm">
         <DialogTitle>Editar Vaga</DialogTitle>
