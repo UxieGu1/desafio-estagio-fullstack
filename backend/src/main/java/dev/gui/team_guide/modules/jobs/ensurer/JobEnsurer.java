@@ -22,7 +22,7 @@ public class JobEnsurer {
 
      public void ensureJobIsOpen(Job job) {
          if (job.getStatus() == JobStatusEnum.CLOSED) {
-             throw new BusinessRuleException("Esta vaga já está encerrada.");
+             throw new BusinessRuleException("This position is now closed.");
          }
      }
 }

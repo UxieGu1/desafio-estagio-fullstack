@@ -1,16 +1,14 @@
 package dev.gui.team_guide.modules.applications.service;
 
-import dev.gui.team_guide.core.exception.BusinessRuleException;
-import dev.gui.team_guide.core.exception.ResourceNotFoundException;
 import dev.gui.team_guide.modules.applications.dto.ApplicationRequest;
 import dev.gui.team_guide.modules.applications.dto.ApplicationResponse;
+import dev.gui.team_guide.modules.applications.ensurer.ApplicationEnsurer;
 import dev.gui.team_guide.modules.applications.entity.Application;
 import dev.gui.team_guide.modules.applications.enums.ApplicationStatusEnum;
 import dev.gui.team_guide.modules.applications.mapper.ApplicationMapper;
 import dev.gui.team_guide.modules.applications.repository.ApplicationRepository;
+import dev.gui.team_guide.modules.jobs.ensurer.JobEnsurer;
 import dev.gui.team_guide.modules.jobs.entity.Job;
-import dev.gui.team_guide.modules.jobs.enums.JobStatusEnum;
-import dev.gui.team_guide.modules.jobs.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,18 +24,17 @@ public class ApplicationService {
 
     private final ApplicationMapper applicationMapper;
 
-    private final JobRepository jobRepository;
+    private final ApplicationEnsurer applicationEnsurer;
+
+    private final JobEnsurer jobEnsurer;
 
 
     @Transactional
     public ApplicationResponse createApplication(ApplicationRequest request){
 
-        Job jobs = jobRepository.findById(request.jobId())
-                .orElseThrow(() -> new ResourceNotFoundException("Job posting not found with ID: " + request.jobId()));
+        Job job = jobEnsurer.ensureJobExists(request.jobId());
 
-        if (jobs.getStatus().equals(JobStatusEnum.CLOSED)) {
-            throw new BusinessRuleException("It is not possible to apply for a closed position.");
-        }
+        jobEnsurer.ensureJobIsOpen(job);
 
         Application application = applicationMapper.toEntity(request);
         Application savedApplication = applicationRepository.save(application);
@@ -46,9 +43,8 @@ public class ApplicationService {
     }
 
     public List<ApplicationResponse> listApplicationsbyJob(Long jobId) {
-        if (!jobRepository.existsById(jobId)) {
-            throw new ResourceNotFoundException("Job posting not found with ID: " + jobId);
-        }
+
+        jobEnsurer.ensureJobExists(jobId);
 
         return applicationRepository.findAllByJobId(jobId)
                 .stream()
@@ -56,25 +52,20 @@ public class ApplicationService {
                 .toList();
     }
 
-    public ApplicationResponse getApplicationById(Long id) {
-        Application application = applicationRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Application not found with ID: " + id));
+    public ApplicationResponse getApplicationById(Long applicationId) {
 
+        Application application = applicationEnsurer.ensureApplicationExists(applicationId);
         return applicationMapper.toResponse(application);
     }
 
     @Transactional
-    public ApplicationResponse updateApplication(Long id, ApplicationRequest request) {
-        Application existingApplication = applicationRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Application not found with ID: " + id));
+    public ApplicationResponse updateApplication(Long applicationId, ApplicationRequest request) {
+        Application existingApplication = applicationEnsurer.ensureApplicationExists(applicationId);
 
         if (!existingApplication.getJobId().equals(request.jobId())) {
-            Job newJob = jobRepository.findById(request.jobId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Job posting not found with ID: " + request.jobId()));
+            Job newJob = jobEnsurer.ensureJobExists(request.jobId());
+            jobEnsurer.ensureJobIsOpen(newJob);
 
-            if (newJob.getStatus().equals(JobStatusEnum.CLOSED)) {
-                throw new IllegalStateException("It is not possible to move application to a closed position.");
-            }
             existingApplication.setJobId(request.jobId());
         }
 
@@ -85,9 +76,8 @@ public class ApplicationService {
         return applicationMapper.toResponse(updatedApplication);
     }
 
-    public ApplicationResponse updateApplicationStatus(Long id, String newStatus) {
-        Application application = applicationRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Application not found with ID: " + id));
+    public ApplicationResponse updateApplicationStatus(Long applicationId, String newStatus) {
+        Application application = applicationEnsurer.ensureApplicationExists(applicationId);
 
         application.setStatus(ApplicationStatusEnum.valueOf(newStatus));
 
@@ -96,10 +86,8 @@ public class ApplicationService {
     }
 
     @Transactional
-    public void deleteApplication(Long id) {
-        if (!applicationRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Application not found with ID: " + id);
-        }
-        applicationRepository.deleteById(id);
+    public void deleteApplication(Long applicationId) {
+        Application application = applicationEnsurer.ensureApplicationExists(applicationId);
+        applicationRepository.delete(application);
     }
 }
