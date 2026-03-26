@@ -25,9 +25,7 @@ const typeMap: Record<string, string> = {
 
 export default function JobList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [page, setPage] = useState(0);
-
   const [searchInput, setSearchInput] = useState("");
   const [activeFilter, setActiveFilter] = useState("");
 

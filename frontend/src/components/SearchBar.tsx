@@ -26,6 +26,7 @@ export default function SearchBar({
   handleKeyPress
 }: SearchBarProps) {
   return (
+    // TODO: Criar um Container
     <Paper elevation={1} style={{ padding: '20px', marginBottom: '30px', borderRadius: '8px' }}>
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={12} sm={9} md={10}>

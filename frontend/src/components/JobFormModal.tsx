@@ -32,7 +32,7 @@ export default function JobFormModal({ open, onClose }: JobFormModalProps) {
     onSuccess: () => {
       queryClient.invalidateQueries('jobs');
       onClose();
-      setFormData({ title: '', area: '', type: 'JUNIOR', status: 'OPEN' }); // Reseta o form
+      setFormData({ title: '', area: '', type: 'JUNIOR', status: 'OPEN' }); 
     },
     onError: () => {
       alert('Erro ao criar vaga. Verifique o console ou o backend.');

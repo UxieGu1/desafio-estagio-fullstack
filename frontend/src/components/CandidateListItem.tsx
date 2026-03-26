@@ -9,15 +9,24 @@ import {
   Tooltip,
   IconButton,
   Divider,
+  darken,
 } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { COLORS } from "../colors";
 
-const statusMap: Record<string, { label: string; color: string; textColor: string }> = {
-  UNDER_REVIEW: { label: "Em Análise", color: "#e0e0e0", textColor: "#333" },
-  APPROVED: { label: "Aprovada", color: "#4caf50", textColor: "#fff" },
-  REJECTED: { label: "Rejeitada", color: "#f44336", textColor: "#fff" },
+const statusMap: Record<
+  string,
+  { label: string; color: string; textColor: string }
+> = {
+  UNDER_REVIEW: {
+    label: "Em Análise",
+    color: darken(COLORS.WHITE, 0.1),
+    textColor: COLORS.BLACK,
+  },
+  APPROVED: { label: "Aprovada", color: COLORS.GREEN, textColor: COLORS.WHITE },
+  REJECTED: { label: "Rejeitada", color: COLORS.RED, textColor: COLORS.WHITE },
 };
 
 interface CandidateListItemProps {
@@ -45,18 +54,7 @@ export default function CandidateListItem({
             </Typography>
           }
           secondary={
-            <Box display="flex" alignItems="center" style={{ gap: "10px", marginTop: "4px" }}>
-              <Typography variant="body2">{app.email}</Typography>
-              <Chip
-                size="small"
-                label={statusMap[app.status]?.label || app.status}
-                style={{
-                  backgroundColor: statusMap[app.status]?.color,
-                  color: statusMap[app.status]?.textColor,
-                  fontSize: "0.7rem",
-                }}
-              />
-            </Box>
+            <CandidateInfo email={app.email} status={app.status} />
           }
         />
 
@@ -66,7 +64,7 @@ export default function CandidateListItem({
               <Tooltip title="Aprovar">
                 <IconButton
                   edge="end"
-                  style={{ color: "#4caf50", marginRight: "5px" }}
+                  style={{ color: COLORS.GREEN, marginRight: "5px" }}
                   onClick={() => onUpdateStatus(app.id, "APPROVED")}
                   disabled={isUpdating}
                 >
@@ -77,7 +75,7 @@ export default function CandidateListItem({
               <Tooltip title="Reprovar">
                 <IconButton
                   edge="end"
-                  style={{ color: "#ff9800", marginRight: "5px" }}
+                  style={{ color: COLORS.RED, marginRight: "5px" }}
                   onClick={() => onUpdateStatus(app.id, "REJECTED")}
                   disabled={isUpdating}
                 >
@@ -90,7 +88,7 @@ export default function CandidateListItem({
           <Tooltip title="Excluir Candidatura">
             <IconButton
               edge="end"
-              style={{ color: "#f44336" }}
+              style={{ color: COLORS.RED }}
               onClick={() => onDelete(app.id)}
               disabled={isDeleting}
             >
@@ -103,3 +101,29 @@ export default function CandidateListItem({
     </React.Fragment>
   );
 }
+
+interface CandidateInfoProps {
+  email: string;
+  status: string;
+}
+
+const CandidateInfo = ({ email, status }: CandidateInfoProps) => {
+  return (
+    <Box
+      display="flex"
+      alignItems="center"
+      style={{ gap: "10px", marginTop: "4px" }}
+    >
+      <Typography variant="body2">{email}</Typography>
+      <Chip
+        size="small"
+        label={statusMap[status]?.label || status}
+        style={{
+          backgroundColor: statusMap[status]?.color,
+          color: statusMap[status]?.textColor,
+          fontSize: "0.7rem",
+        }}
+      />
+    </Box>
+  );
+};

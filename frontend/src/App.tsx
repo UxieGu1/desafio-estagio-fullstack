@@ -1,14 +1,20 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider, createTheme, CssBaseline } from '@material-ui/core';
-import JobList from './pages/JobList';
-import JobDetail from './pages/JobDetail';
-import Dashboard from './pages/DashBoard';
+import { Routes, Route, Navigate } from "react-router-dom";
+import {
+  ThemeProvider,
+  createTheme,
+  CssBaseline,
+  darken,
+} from "@material-ui/core";
+import JobList from "./pages/JobList";
+import JobDetail from "./pages/JobDetail";
+import Dashboard from "./pages/DashBoard";
+import { COLORS } from "./colors";
 
 const theme = createTheme({
   palette: {
-    primary: { main: '#ff9800', contrastText: '#ffffff' },
-    secondary: { main: '#ffffff', contrastText: '#ff9800' },
-    background: { default: '#f4f6f8', paper: '#ffffff' },
+    primary: { main: COLORS.ORANGE, contrastText: COLORS.WHITE },
+    secondary: { main: COLORS.WHITE, contrastText: COLORS.ORANGE },
+    background: { default: darken(COLORS.WHITE, 0.03), paper: COLORS.WHITE },
   },
 });
 

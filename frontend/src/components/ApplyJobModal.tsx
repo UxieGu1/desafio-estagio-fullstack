@@ -8,6 +8,7 @@ import {
   TextField,
   Button,
 } from "@material-ui/core";
+import { COLORS } from "../colors";
 
 interface ApplyJobModalProps {
   isOpen: boolean;
@@ -70,7 +71,7 @@ export default function ApplyJobModal({
             type="submit"
             variant="contained"
             disabled={isLoading}
-            style={{ backgroundColor: "#ffa726", color: "#fff" }}
+            style={{ backgroundColor: COLORS.ORANGE_TWO, color: COLORS.WHITE }}
           >
             {isLoading ? "Enviando..." : "Confirmar"}
           </Button>
