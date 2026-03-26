@@ -1,8 +1,8 @@
-# 🚀 TeamGuide - Gestão de Vagas e Candidaturas <br> (Desafio Full Stack)
+# TeamGuide - Gestão de Vagas e Candidaturas <br> (Desafio Full Stack)
 
 Este projeto foi desenvolvido como solução para o desafio técnico de Estágio em Desenvolvimento Full Stack da **TeamGuide**. A aplicação consiste num sistema de gestão de vagas internas e candidaturas, onde o comportamento de um módulo impacta diretamente o outro (ex: não é possível candidatar-se a uma vaga encerrada).
 
-## 🎯 O que foi entregue?
+## O que foi entregue?
 
 Foquei em entregar não apenas os requisitos obrigatórios, mas também em explorar ao máximo a lista de diferenciais (bônus) propostos no edital, garantindo um código limpo, testado e fácil de rodar.
 
@@ -19,7 +19,7 @@ Foquei em entregar não apenas os requisitos obrigatórios, mas também em explo
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 **Front-end:**
 - React
@@ -80,3 +80,12 @@ mvn test
 ```
 (Ou execute diretamente através do painel de testes da sua IDE).
 
+---
+
+## O que eu faria numa próxima etapa (Próximos Passos)
+Para manter o escopo alinhado ao tempo do desafio, algumas melhorias foram mapeadas para o futuro:
+
+- **Autenticação e Autorização:** Implementar JWT (JSON Web Tokens) para separar a visão de "Administrador/RH" da visão de "Candidato".
+- **Filtros Avançados:** Adicionar filtros por Área e Nível de Senioridade na listagem de vagas.
+- **Soft Delete:** Ao invés de excluir vagas do banco de dados definitivamente, implementar uma flag de is_deleted para manter o histórico de dados analíticos intacto.
+- **CI/CD:** Criar uma pipeline no GitHub Actions para rodar os testes automaticamente a cada Push.
