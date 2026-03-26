@@ -91,64 +91,25 @@ export default function Dashboard() {
         </Typography>
 
         <Grid container spacing={4} style={{ marginBottom: "40px" }}>
-          {/* Criar função para renderizar cada item do grid e abstrair a cor, label e valor */}
-          <Grid item xs={12} sm={4}>
-            <Paper
-              elevation={3}
-              style={{
-                padding: "20px",
-                textAlign: "center",
-                borderTop: `5px solid ${COLORS.BLUE}`,
-              }}
-            >
-              <Typography variant="h6" color="textSecondary">
-                Total de Vagas
-              </Typography>
-              <Typography variant="h3" style={{ fontWeight: "bold" }}>
-                {totalVagas}
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Paper
-              elevation={3}
-              style={{
-                padding: "20px",
-                textAlign: "center",
-                borderTop: `5px solid ${COLORS.GREEN}`,
-              }}
-            >
-              <Typography variant="h6" color="textSecondary">
-                Vagas Abertas
-              </Typography>
-              <Typography
-                variant="h3"
-                style={{ fontWeight: "bold", color: COLORS.GREEN }}
-              >
-                {vagasAbertas}
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Paper
-              elevation={3}
-              style={{
-                padding: "20px",
-                textAlign: "center",
-                borderTop: `5px solid ${COLORS.RED}`,
-              }}
-            >
-              <Typography variant="h6" color="textSecondary">
-                Vagas Encerradas
-              </Typography>
-              <Typography
-                variant="h3"
-                style={{ fontWeight: "bold", color: COLORS.RED }}
-              >
-                {vagasFechadas}
-              </Typography>
-            </Paper>
-          </Grid>
+          
+          <StatCard
+            label="Total de Vagas"
+            value={totalVagas}
+            color={COLORS.BLUE}
+          />
+          <StatCard
+            label="Vagas Abertas"
+            value={vagasAbertas}
+            color={COLORS.GREEN}
+            valueColor={COLORS.GREEN}
+          />
+          <StatCard
+            label="Vagas Encerradas"
+            value={vagasFechadas}
+            color={COLORS.RED}
+            valueColor={COLORS.RED}
+          />
+
         </Grid>
 
         <Grid container spacing={4}>
@@ -227,3 +188,35 @@ export default function Dashboard() {
     </Container>
   );
 }
+
+interface StatCardProps {
+  label: string;
+  value: number;
+  color: string;
+  valueColor?: string; 
+}
+
+const StatCard = ({ label, value, color, valueColor }: StatCardProps) => {
+  return (
+    <Grid item xs={12} sm={4}>
+      <Paper
+        elevation={3}
+        style={{
+          padding: "20px",
+          textAlign: "center",
+          borderTop: `5px solid ${color}`,
+        }}
+      >
+        <Typography variant="h6" color="textSecondary">
+          {label}
+        </Typography>
+        <Typography
+          variant="h3"
+          style={{ fontWeight: "bold", color: valueColor || "inherit" }}
+        >
+          {value}
+        </Typography>
+      </Paper>
+    </Grid>
+  );
+};

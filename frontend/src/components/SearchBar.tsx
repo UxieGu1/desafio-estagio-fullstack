@@ -5,7 +5,8 @@ import {
   TextField, 
   InputAdornment, 
   IconButton, 
-  Button 
+  Button,
+  styled 
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -26,8 +27,7 @@ export default function SearchBar({
   handleKeyPress
 }: SearchBarProps) {
   return (
-    // TODO: Criar um Container
-    <Paper elevation={1} style={{ padding: '20px', marginBottom: '30px', borderRadius: '8px' }}>
+    <Container elevation={1}>
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={12} sm={9} md={10}>
           <TextField
@@ -66,6 +66,12 @@ export default function SearchBar({
           </Button>
         </Grid>
       </Grid>
-    </Paper>
+    </Container>
   );
 }
+
+const Container = styled(Paper)({
+  padding: '20px',
+  marginBottom: '30px',
+  borderRadius: '8px',
+});
